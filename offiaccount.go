@@ -40,7 +40,11 @@ type OfficialAccountAppServiceConfig struct {
 	WXOfficialImp   WXOfficialImp
 }
 
-func InitWXOfficialAccountAppService(conf OfficialAccountAppServiceConfig) (*WXOfficial, error) {
+var (
+	InsWXOfficial *WXOfficial
+)
+
+func InitWXOfficialAccountAppService(conf OfficialAccountAppServiceConfig) error {
 	app, err := officialAccount.NewOfficialAccount(&officialAccount.UserConfig{
 		AppID:        conf.OfficialAccount.AppID,
 		Secret:       conf.OfficialAccount.AppSecret,
@@ -51,13 +55,14 @@ func InitWXOfficialAccountAppService(conf OfficialAccountAppServiceConfig) (*WXO
 		HttpDebug:    conf.OfficialAccount.HttpDebug,
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &WXOfficial{
+	InsWXOfficial = &WXOfficial{
 		OfficialAccountApp: app,
 		subscribe:          conf.WXOfficialImp.Subscribe,
 		unSubscribe:        conf.WXOfficialImp.UnSubscribe,
 		pushHandler:        conf.WXOfficialImp.PushHandler,
 		IsSaveHandlerLog:   conf.OfficialAccount.IsSaveHandlerLog,
-	}, nil
+	}
+	return nil
 }
