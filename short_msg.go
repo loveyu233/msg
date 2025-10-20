@@ -1,4 +1,4 @@
-package gb
+package msg
 
 import (
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
