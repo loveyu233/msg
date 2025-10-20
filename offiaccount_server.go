@@ -77,7 +77,7 @@ func (wx *WXOfficial) oACallback(c *gin.Context) {
 
 func (wx *WXOfficial) pushHand(c *gin.Context) {
 	users, message := wx.pushHandler(c)
-	_, err := wx.push(users, message)
+	_, err := wx.Push(users, message)
 	if err != nil {
 		gb.ResponseError(c, gb.ErrRequestWechat.WithMessage("推送消息失败:%s", err.Error()))
 		return
@@ -85,7 +85,7 @@ func (wx *WXOfficial) pushHand(c *gin.Context) {
 	gb.ResponseSuccess(c, nil)
 }
 
-func (wx *WXOfficial) push(toUser []string, message string) (interface{}, error) {
+func (wx *WXOfficial) Push(toUser []string, message string) (interface{}, error) {
 	if len(toUser) == 1 {
 		//至少两个才能发送成功 添加一个空id
 		toUser = append(toUser, "")
