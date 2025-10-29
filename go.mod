@@ -10,7 +10,7 @@ require (
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7
 	github.com/aliyun/credentials-go v1.4.7
 	github.com/gin-gonic/gin v1.11.0
-	github.com/loveyu233/gb v0.3.43
+	github.com/loveyu233/gb v0.3.51
 )
 
 require (

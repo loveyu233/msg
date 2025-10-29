@@ -74,3 +74,39 @@ func (s *ShortMsgConfig) SendSimpleMsg(targetPhoneNumber, signName, templateCode
 		TemplateParam: tea.String(templateParam),
 	})
 }
+
+// SendBatchSms 批量发送短信
+func (s *ShortMsgConfig) SendBatchSms(sendBatchSmsRequest *dysmsapi20170525.SendBatchSmsRequest) error {
+	runtime := &util.RuntimeOptions{}
+	tryErr := func() (e error) {
+		defer func() {
+			if r := tea.Recover(recover()); r != nil {
+				e = r
+			}
+		}()
+		_, err := s.client.SendBatchSmsWithOptions(sendBatchSmsRequest, runtime)
+		if err != nil {
+			return err
+		}
+		return nil
+	}()
+
+	if tryErr != nil {
+		return tryErr
+	}
+	return nil
+}
+
+// SendSimpleBatchMsg 简化批量发送短信
+// targetPhoneNumbers: 多个手机号，用逗号分隔，最多1000个
+// signNames: 多个签名，用逗号分隔，与手机号一一对应
+// templateCode: 模板CODE
+// templateParams: 多个模板参数，用逗号分隔的JSON字符串，与手机号一一对应
+func (s *ShortMsgConfig) SendSimpleBatchMsg(targetPhoneNumbers, signNames, templateCode, templateParams string) error {
+	return s.SendBatchSms(&dysmsapi20170525.SendBatchSmsRequest{
+		PhoneNumberJson:   tea.String(targetPhoneNumbers),
+		SignNameJson:      tea.String(signNames),
+		TemplateCode:      tea.String(templateCode),
+		TemplateParamJson: tea.String(templateParams),
+	})
+}
